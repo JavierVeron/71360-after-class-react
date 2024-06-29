@@ -1,0 +1,6 @@
+.imagenBanner {
+    background-image: url("images/phantom-gx-banner.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
