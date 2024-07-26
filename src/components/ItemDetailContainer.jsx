@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react"
-import arrayProductos from "../assets/json/productos.json"
 import ItemDetail from "./ItemDetail";
 import { useParams } from "react-router-dom";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 const ItemDetailContainer = () => {
     const [item, setItem] = useState({});
     const {id} = useParams();
 
     useEffect(() => {
-        const promesa = new Promise(resolve => {
-            setTimeout(() => {
-                resolve(arrayProductos.find(item => item.id === parseInt(id)))
-            }, 2000)
-        })
-
-        promesa.then(response => {
-            setItem(response)
+        const db = getFirestore();
+        const docRef = doc(db, "items", id);
+        getDoc(docRef).then(snapShot => {
+            if (snapShot.exists()) {
+                setItem({id:snapShot.id, ...snapShot.data()});
+            } else {
+                console.error("Error! No existe el documento!");
+            }
         })
     }, [id])
 
